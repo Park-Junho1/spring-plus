@@ -24,25 +24,47 @@ repositories {
 }
 
 dependencies {
+    // Spring Boot dependencies
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-security' // Security 관련 의존성
+
+    // Lombok (컴파일 시에만 필요)
     compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    // Database dependencies
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    // bcrypt
+    // BCrypt (패스워드 암호화 라이브러리)
     implementation 'at.favre.lib:bcrypt:0.10.2'
 
-    // jwt
-    compileOnly group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.5'
-    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.5'
-    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.5'
+    //QueryDSL
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+
+    // JWT (JSON Web Token 라이브러리)
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5' // jjwt-api는 컴파일 시 필요
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5' // 구현체
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5' // Jackson 지원
+
+    // Test dependencies
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'org.mockito:mockito-core:5.5.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.5.0'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
 }
 
-tasks.named('test') {
+tasks.named("compileJava") {
     useJUnitPlatform()
+}
+
+//Clean generated sources for QueryDSL
+clean {
+    delete file('src/main/generated')
 }
