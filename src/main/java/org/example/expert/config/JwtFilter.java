@@ -13,9 +13,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.example.expert.domain.user.enums.UserRole;
 
 import java.io.IOException;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @RequiredArgsConstructor
+@Component
 public class JwtFilter implements Filter {
 
     private final JwtUtil jwtUtil;
